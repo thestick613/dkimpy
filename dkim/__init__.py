@@ -464,7 +464,7 @@ class DKIM(object):
         (b'c', canon_policy.to_c_value()),
         (b'd', domain),
         (b'i', identity or b"@"+domain),
-        length and (b'l', len(body)),
+        length and (b'l', str(len(body)).encode('ascii')),
         (b'q', b"dns/txt"),
         (b's', selector),
         (b't', str(int(time.time())).encode('ascii')),

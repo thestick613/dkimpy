@@ -19,6 +19,7 @@
 import os.path
 import unittest
 import time
+import email
 
 import dkim
 
@@ -86,6 +87,14 @@ Y+vtSBczUiKERHv1yRbcaQtZFh5wtiRrN04BLUTD21MycBX5jYchHjPY/wIDAQAB"""
                     canonicalize=(header_algo, body_algo))
                 res = dkim.verify(sig + self.message, dnsfunc=self.dnsfunc)
                 self.assertTrue(res)
+
+    def test_add_body_length(self):
+        sig = dkim.sign(
+            self.message, b"test", b"example.com", self.key, length=True)
+        msg = email.message_from_string(self.message.decode('utf-8'))
+        self.assertIn('\n l=%s' % len(msg.get_payload() + '\n'), sig.decode('utf-8'))
+        res = dkim.verify(sig + self.message, dnsfunc=self.dnsfunc)
+        self.assertTrue(res)
 
     def test_altered_body_fails(self):
         # An altered body fails verification.
