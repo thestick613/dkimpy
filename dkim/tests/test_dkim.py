@@ -87,6 +87,17 @@ Y+vtSBczUiKERHv1yRbcaQtZFh5wtiRrN04BLUTD21MycBX5jYchHjPY/wIDAQAB"""
                 res = dkim.verify(sig + self.message, dnsfunc=self.dnsfunc)
                 self.assertTrue(res)
 
+    def test_simple_signature(self):
+        # A message verifies after being signed with SHOULD headers
+        for header_algo in (b"simple", b"relaxed"):
+	    for body_algo in (b"simple", b"relaxed"):
+	        sig = dkim.sign(
+                    self.message, b"test", b"example.com", self.key,
+                    canonicalize=(header_algo, body_algo),
+                    include_headers=(b'from',) + dkim.DKIM.SHOULD)
+	        res = dkim.verify(sig + self.message, dnsfunc=self.dnsfunc)
+	        self.assertTrue(res)
+
     def test_altered_body_fails(self):
         # An altered body fails verification.
         for header_algo in (b"simple", b"relaxed"):
