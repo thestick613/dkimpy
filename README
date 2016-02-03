@@ -1,0 +1,67 @@
+dkimpy - DKIM (DomainKeys Identified Mail)
+https://launchpad.net/dkimpy/
+
+Friendly fork of:
+http://hewgill.com/pydkim/
+
+INTRODUCTION
+
+dkimpy is a library that implements DKIM (DomainKeys Identified Mail) email
+signing and verification.
+
+VERSION
+
+This is dkimpy 0.5.6.
+
+REQUIREMENTS
+
+ - Python 2.x >= 2.6, or Python 3.x >= 3.1.
+ - dnspython or pydns. dnspython is preferred if both are present.
+
+INSTALLATION
+
+To build and install dkimpy:
+
+    python setup.py install
+
+TESTING
+
+To run dkimpy's test suite:
+
+    PYTHONPATH=. python dkim
+or
+    python test.py
+or
+    PYTHONPATH=. python -m unittest dkim.tests.test_suite
+
+Alternatively, if you have testrepository installed:
+
+    testr init
+    testr run
+
+USAGE
+
+The dkimpy library offers one module called dkim. The sign() function takes an
+RFC822 formatted message, along with some signing options, and returns a
+DKIM-Signature header line that can be prepended to the message. The verify()
+function takes an RFC822 formatted message, and returns True or False depending
+on whether the signature verifies correctly.
+
+Two helper programs are also supplied: dkimsign.py and dkimverify.py.
+
+dkimsign.py is a filter that reads an RFC822 message on standard input, and
+writes the same message on standard output with a DKIM-Signature line
+prepended. The signing options are specified on the command line:
+
+dkimsign.py selector domain privatekeyfile [identity]
+
+The identity is optional and defaults to "@domain".
+
+dkimverify.py reads an RFC822 message on standard input, and returns with exit
+code 0 if the signature verifies successfully. Otherwise, it returns with exit
+code 1. 
+
+FEEDBACK
+
+Bug reports may be submitted to the bug tracker for the dkimpy project on
+launchpad.

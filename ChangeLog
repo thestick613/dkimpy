@@ -1,0 +1,78 @@
+2015-12-07 Verion 0.5.6
+    - Brown paper bag release, 0.5.5 tarball inadvertently included pyc files
+      and other artifacts from development
+
+2015-12-07 Version 0.5.5
+    - Fix and test case for case insensitive subdomain matching.
+    - Python3 compatibility fixes and test cases thanks to Diane Trout
+
+2013-06-10 Version 0.5.4
+    - Fixed error in FWS regular expression that cause some valid signatures
+      to fail verification (Thanks to Peter Palfrader (weasel) for the patch)
+      http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=711751
+    - Change dkimsign.py to sign the default (recommended) set of headers
+      instead of all headers
+
+2012-10-27 Version 0.5.3
+    - Make key parsing error messages more specific to help troubleshooting
+      based on user feedback
+
+2012-06-13 Version 0.5.2
+    - Change canonicalization defaults to work around issues with different
+      verification implementations <https://launchpad.net/bugs/939128>
+    - Fully fold DKIM-Signature on sign, and ignore FWS in b= value on verify
+    - Fix hashing problem while signing using sha1
+    - Trap NXDOMAIN exception with dnspython
+    - Other minor bug fixes
+
+2012-02-03 Version 0.5.1
+    - Rename tarball to dkimpy to avoid confusion with original project
+    - Apply performance patch from <https://launchpad.net/bugs/901591>
+    - save parsed signatures in DKIM object
+    - do not require DNS/dnspython for signing
+
+2011-10-26 Version 0.5
+    - Add test case and fix for <https://launchpad.net/bugs/644046>
+    - Add test case and fix for <https://launchpad.net/bugs/737311>
+    - Fix dkim.fold()
+    - raise KeyFormatError when missing required key parts in DNS
+    - do not sign all headers by default
+    - option to verify signatures other than first
+
+2011-06-16 Version 0.4.2
+    - Fix use of dns namespace so dnspython works
+
+2011-06-15 Version 0.4.1
+    - Fix some except clauses for python3
+    - Correct Changelog and release versions
+    - Add test case for <https://launchpad.net/bugs/587783>
+    - add back dkim.Relaxed and dkim.Simple constants
+
+2011-06-14 Version 0.4
+
+    - new API: class DKIM to retrieve domain and other info after verify
+    - Add support for python3
+    - pydns driver tested and fixed
+    - when producing Relaxed mode signatures, the partial DKIM-Signature
+      header must be canonicalized before hashing (Martin Pool)
+      <https://launchpad.net/bugs/587783>
+    - other bug fixes
+
+2008-06-25 Version 0.3
+
+    - length parameter to sign() is now a boolean
+    - sign() now folds the DKIM-Signature line
+    - validation of all inputs
+    - general code cleanup
+
+2008-02-19 Version 0.2
+
+    - handle "rsa-sha1" algorithm properly
+    - handle multiple DKIM-Signature lines
+    - handle FWS around = in DKIM-Signature lines
+    - handle case of single canonicalization algorithm
+    - handle l= signature property
+
+2008-02-18 Version 0.1
+
+    - initial release
