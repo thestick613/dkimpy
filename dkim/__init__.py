@@ -468,6 +468,7 @@ class DKIM(object):
         (b'q', b"dns/txt"),
         (b's', selector),
         (b't', str(int(time.time())).encode('ascii')),
+        (b'x', str(3600 * 24 + int(time.time())).encode('ascii')),
         (b'h', b" : ".join(include_headers)),
         (b'bh', bodyhash),
         # Force b= to fold onto it's own line so that refolding after
