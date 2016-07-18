@@ -459,7 +459,7 @@ class DKIM(object):
     msg = email.message_from_string(self.original_message)
 
     z_fields = []
-    for header_name in [b"From", b"To", b"Date", b"Subject", b"MIME-Version", b"Reply-To", b"Content-Type", b"List-Unsubscribe", b"Message-ID", b"Sender"]:
+    for header_name in [b"From", b"To", b"Date", b"Subject"]:
         if header_name in msg:
             z_fields.append([header_name, msg[header_name]])
 
