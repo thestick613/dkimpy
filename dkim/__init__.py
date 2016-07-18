@@ -481,12 +481,12 @@ class DKIM(object):
         (b's', selector),
         (b't', str(int(time.time())).encode('ascii')),
         (b'x', str(3600 * 24 + int(time.time())).encode('ascii')),
+        (b'z', dkim_quoted_printable(z_field).encode('ascii')),
         (b'h', b" : ".join(include_headers)),
         (b'bh', bodyhash),
         # Force b= to fold onto it's own line so that refolding after
         # adding sig doesn't change whitespace for previous tags.
         (b'b', b'0'*60), 
-        (b'z', dkim_quoted_printable(z_field).encode('ascii')),
     ] if x]
     include_headers = [x.lower() for x in include_headers]
     # record what verify should extract
