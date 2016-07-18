@@ -24,6 +24,7 @@ import hashlib
 import logging
 import re
 import time
+import email
 
 from dkim.canonicalization import (
     CanonicalizationPolicy,
@@ -47,6 +48,7 @@ from dkim.util import (
     get_default_logger,
     InvalidTagValueList,
     parse_tag_value,
+    dkim_quoted_printable,
     )
 
 __all__ = [
@@ -354,6 +356,7 @@ class DKIM(object):
   #: (with either \\n or \\r\\n line endings)
   #: @since: 0.5
   def set_message(self,message):
+    self.original_message = message
     if message:
       self.headers, self.body = rfc822_parse(message)
     else:
@@ -453,6 +456,15 @@ class DKIM(object):
 
     body = canon_policy.canonicalize_body(self.body)
 
+    msg = email.message_from_string(self.original_message)
+
+    z_fields = []
+    for header_name in [b"From", b"To", b"Date", b"Subject", b"MIME-Version", b"Reply-To", b"Content-Type", b"List-Unsubscribe", b"Message-ID", b"Sender"]:
+        if header_name in msg:
+            z_fields.append([header_name, msg[header_name]])
+
+    z_field = b"|".join([b"%s: %s" % (header_name, header_value) for (header_name, header_value) in z_fields])
+
     hasher = HASH_ALGORITHMS[self.signature_algorithm]
     h = hasher()
     h.update(body)
@@ -467,6 +479,7 @@ class DKIM(object):
         length and (b'l', len(body)),
         (b'q', b"dns/txt"),
         (b's', selector),
+        (b'z', dkim_quoted_printable(z_field).encode('utf8')),
         (b't', str(int(time.time())).encode('ascii')),
         (b'x', str(3600 * 24 + int(time.time())).encode('ascii')),
         (b'h', b" : ".join(include_headers)),

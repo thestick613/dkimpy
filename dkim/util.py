@@ -31,6 +31,7 @@ __all__ = [
     'InvalidTagSpec',
     'InvalidTagValueList',
     'parse_tag_value',
+    'dkim_quoted_printable',
     ]
 
 
@@ -76,3 +77,13 @@ def get_default_logger():
     if not logger.handlers:
         logger.addHandler(NullHandler())
     return logger
+
+
+def dkim_quoted_printable(s):
+    news = b""
+    for c in s.decode('utf8'):
+        if (0 <= ord(c) < 32) or (ord(c) >= 127) or c == ";" or c.isspace():
+            news += b"=%s" % c.encode('hex')
+        else:
+            news += c
+    return news
